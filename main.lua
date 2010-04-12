@@ -3,7 +3,8 @@ function love.load()
     initial_x=200,
     initial_y=400,
     step=500,
-    numStars=100
+    numStars=100,
+    starSpeedFactor=1
   }
   
   spaceship = {
@@ -23,12 +24,17 @@ function love.load()
 end
 
 function love.update(dt)
-  if love.keyboard.isDown("left") and (spaceship.x + config.step * dt) >= 10 then
+  if love.keyboard.isDown("left") and (spaceship.x - config.step * dt) >= 0 then
     spaceship.x = spaceship.x - config.step * dt
+    if spaceship.x < 400 then
+      config.starSpeedFactor = 1
+    end
   end
   
   if love.keyboard.isDown("right") and (spaceship.x + config.step * dt) < 400 then
     spaceship.x = spaceship.x + config.step * dt
+  elseif love.keyboard.isDown("right") and (spaceship.x + config.step * dt) >= 400 then
+    config.starSpeedFactor = 2
   end
   
   if love.keyboard.isDown("up") and (spaceship.y - config.step * dt) >= 0 then
@@ -40,7 +46,7 @@ function love.update(dt)
   end
   
   for i = 1,config.numStars do
-		stars[i].x = stars[i].x - stars[i].speed*dt
+		stars[i].x = stars[i].x - stars[i].speed * config.starSpeedFactor * dt
 		if stars[i].x < -20 then
 			stars[i].x = math.random(830, 900);
 			stars[i].y = math.random(1,600);
@@ -48,7 +54,7 @@ function love.update(dt)
 		angle[i] = angle[i] + math.pi/1.5 * dt;		
 		x[i] = x[i] - letterSize*3*dt;
 		if x[config.numStars-1] < -letterSize*2 then
-			initScroller();
+			initStars();
 		end
 	end
 end
