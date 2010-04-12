@@ -23,19 +23,19 @@ function love.load()
 end
 
 function love.update(dt)
-  if love.keyboard.isDown("left") then
+  if love.keyboard.isDown("left") and (spaceship.x + config.step * dt) >= 10 then
     spaceship.x = spaceship.x - config.step * dt
   end
   
-  if love.keyboard.isDown("right") then
+  if love.keyboard.isDown("right") and (spaceship.x + config.step * dt) < 400 then
     spaceship.x = spaceship.x + config.step * dt
   end
   
-  if love.keyboard.isDown("up") then
+  if love.keyboard.isDown("up") and (spaceship.y - config.step * dt) >= 0 then
     spaceship.y = spaceship.y - config.step * dt
   end
   
-  if love.keyboard.isDown("down") then
+  if love.keyboard.isDown("down") and (spaceship.y + config.step * dt) < 540  then
     spaceship.y = spaceship.y + config.step * dt
   end
   
