@@ -10,7 +10,11 @@ function love.load()
   spaceship = {
     image=love.graphics.newImage("images/love-ball.png"),
     x=config.initial_x,
-    y=config.initial_y
+    y=config.initial_y,
+    isBoosted=false,
+    boostFactor=4,
+    boostDuration=2,
+    timeBoosted=0
   }
   
   star = love.graphics.newImage("images/star.png")
@@ -24,17 +28,20 @@ function love.load()
 end
 
 function love.update(dt)
-  if love.keyboard.isDown("left") and (spaceship.x - config.step * dt) >= 0 then
-    spaceship.x = spaceship.x - config.step * dt
-    if spaceship.x < 400 then
+  if spaceship.isBoosted then
+    spaceship.timeBoosted = spaceship.timeBoosted + dt
+    if spaceship.timeBoosted >= spaceship.boostDuration then
+      spaceship.isBoosted = false
       config.starSpeedFactor = 1
     end
   end
   
-  if love.keyboard.isDown("right") and (spaceship.x + config.step * dt) < 400 then
+  if love.keyboard.isDown("left") and (spaceship.x - config.step * dt) >= 0 then
+    spaceship.x = spaceship.x - config.step * dt
+  end
+  
+  if love.keyboard.isDown("right") and (spaceship.x + config.step * dt) < 740 then
     spaceship.x = spaceship.x + config.step * dt
-  elseif love.keyboard.isDown("right") and (spaceship.x + config.step * dt) >= 400 then
-    config.starSpeedFactor = 4
   end
   
   if love.keyboard.isDown("up") and (spaceship.y - config.step * dt) >= 0 then
@@ -59,6 +66,14 @@ function love.update(dt)
   end
 end
 
+function love.keypressed(k)
+  if k == ' ' and not spaceship.isBoosted then
+    config.starSpeedFactor  = spaceship.boostFactor
+    spaceship.isBoosted     = true
+    spaceship.timeBoosted   = 0
+  end
+end
+
 function love.draw()
   for i = 1,config.numStars do  
     love.graphics.setColor(255 - stars[i].speed,255 - stars[i].speed/2,150,stars[i].speed*0.9);   
@@ -67,6 +82,7 @@ function love.draw()
   
   love.graphics.setColor(255, 255, 255)
   love.graphics.draw(spaceship.image, spaceship.x, spaceship.y)
+  love.graphics.print("spaceship.timeBoosted: " .. spaceship.timeBoosted, 10, 20)
 end
 
 function initStars()
