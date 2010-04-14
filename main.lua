@@ -1,20 +1,20 @@
 function love.load()
   config = {
-    initial_x=200,
-    initial_y=400,
-    step=500,
-    numStars=100,
-    starSpeedFactor=1
+    initial_x       = 200,
+    initial_y       = 400,
+    step            = 500,
+    numStars        = 100,
+    starSpeedFactor = 1
   }
   
   spaceship = {
-    image=love.graphics.newImage("images/love-ball.png"),
-    x=config.initial_x,
-    y=config.initial_y,
-    isBoosted=false,
-    boostFactor=4,
-    boostDuration=2,
-    timeBoosted=0
+    image         = love.graphics.newImage("images/love-ball.png"),
+    x             = config.initial_x,
+    y             = config.initial_y,
+    isBoosted     = false,
+    boostFactor   = 4,
+    boostDuration = 2,
+    timeBoosted   = 0
   }
   
   star = love.graphics.newImage("images/star.png")
