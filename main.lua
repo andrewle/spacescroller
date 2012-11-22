@@ -53,7 +53,7 @@ function love.update(dt)
     spaceship.y = spaceship.y + config.step * dt
   end
   
-  if love.keyboard.isDown(" ") and not spaceship.isBoosted then
+  if love.keyboard.isDown("lshift") and not spaceship.isBoosted then
     config.starSpeedFactor  = spaceship.boostFactor
     spaceship.isBoosted     = true
     spaceship.timeBoosted   = 0
@@ -74,7 +74,7 @@ function love.update(dt)
 end
 
 function love.keyreleased(key)
-   if key == " " then
+   if key == "lshift" then
     spaceship.isBoosted = false
    end
 end
