@@ -8,7 +8,10 @@ function love.load()
   }
 
   spaceship = {
-    image         = love.graphics.newImage("images/love-ball.png"),
+    images = {
+      normal = love.graphics.newImage("images/hero-ship.png"),
+      boosted = love.graphics.newImage("images/hero-ship-boosted.png"),
+    },
     x             = config.initial_x,
     y             = config.initial_y,
     isBoosted     = false,
@@ -81,7 +84,7 @@ function love.draw()
   end
 
   love.graphics.setColor(255, 255, 255)
-  love.graphics.draw(spaceship.image, spaceship.x, spaceship.y)
+  love.graphics.draw(spaceship.images.normal, spaceship.x, spaceship.y)
   love.graphics.print("spaceship.timeBoosted: " .. spaceship.timeBoosted, 10, 20)
 end
 
