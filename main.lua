@@ -31,20 +31,18 @@ function love.load()
 end
 
 function love.update(dt)
-  if spaceship.isBoosted then
-    spaceship.timeBoosted = spaceship.timeBoosted + dt
-    if spaceship.timeBoosted >= spaceship.boostDuration then
-      spaceship.isBoosted = false
-      config.starSpeedFactor = 1
+  if not spaceship.isBoosted then
+    config.starSpeedFactor = 1
+  end
+  
+  if spaceship.isBoosted == false then
+    if love.keyboard.isDown("left") and (spaceship.x - config.step * dt) >= 0 then
+      spaceship.x = spaceship.x - config.step * dt
     end
-  end
 
-  if love.keyboard.isDown("left") and (spaceship.x - config.step * dt) >= 0 then
-    spaceship.x = spaceship.x - config.step * dt
-  end
-
-  if love.keyboard.isDown("right") and (spaceship.x + config.step * dt) < 740 then
-    spaceship.x = spaceship.x + config.step * dt
+    if love.keyboard.isDown("right") and (spaceship.x + config.step * dt) < 740 then
+	  spaceship.x = spaceship.x + config.step * dt
+    end
   end
 
   if love.keyboard.isDown("up") and (spaceship.y - config.step * dt) >= 0 then
@@ -53,6 +51,12 @@ function love.update(dt)
 
   if love.keyboard.isDown("down") and (spaceship.y + config.step * dt) < 540  then
     spaceship.y = spaceship.y + config.step * dt
+  end
+  
+  if love.keyboard.isDown(" ") and not spaceship.isBoosted then
+    config.starSpeedFactor  = spaceship.boostFactor
+    spaceship.isBoosted     = true
+    spaceship.timeBoosted   = 0
   end
 
   for i = 1,config.numStars do
@@ -69,12 +73,10 @@ function love.update(dt)
   end
 end
 
-function love.keypressed(k)
-  if k == ' ' and not spaceship.isBoosted then
-    config.starSpeedFactor  = spaceship.boostFactor
-    spaceship.isBoosted     = true
-    spaceship.timeBoosted   = 0
-  end
+function love.keyreleased(key)
+   if key == " " then
+    spaceship.isBoosted = false
+   end
 end
 
 function love.draw()
@@ -92,8 +94,6 @@ function love.draw()
   else
     love.graphics.draw(spaceship.images.boosted, spaceship.x, spaceship.y)
   end
-
-  love.graphics.print("spaceship.timeBoosted: " .. spaceship.timeBoosted, 10, 20)
 end
 
 function initStars()
