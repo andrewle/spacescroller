@@ -6,7 +6,7 @@ function love.load()
     numStars        = 100,
     starSpeedFactor = 1
   }
-  
+
   spaceship = {
     image         = love.graphics.newImage("images/love-ball.png"),
     x             = config.initial_x,
@@ -16,7 +16,7 @@ function love.load()
     boostDuration = 2,
     timeBoosted   = 0
   }
-  
+
   star = love.graphics.newImage("images/star.png")
   stars = {}
   love.graphics.setColorMode("modulate")
@@ -35,30 +35,30 @@ function love.update(dt)
       config.starSpeedFactor = 1
     end
   end
-  
+
   if love.keyboard.isDown("left") and (spaceship.x - config.step * dt) >= 0 then
     spaceship.x = spaceship.x - config.step * dt
   end
-  
+
   if love.keyboard.isDown("right") and (spaceship.x + config.step * dt) < 740 then
     spaceship.x = spaceship.x + config.step * dt
   end
-  
+
   if love.keyboard.isDown("up") and (spaceship.y - config.step * dt) >= 0 then
     spaceship.y = spaceship.y - config.step * dt
   end
-  
+
   if love.keyboard.isDown("down") and (spaceship.y + config.step * dt) < 540  then
     spaceship.y = spaceship.y + config.step * dt
   end
-  
+
   for i = 1,config.numStars do
     stars[i].x = stars[i].x - stars[i].speed * config.starSpeedFactor * dt
     if stars[i].x < -20 then
       stars[i].x = math.random(830, 900)
       stars[i].y = math.random(1,600)
     end
-    angle[i] = angle[i] + math.pi/1.5 * dt;   
+    angle[i] = angle[i] + math.pi/1.5 * dt;
     x[i] = x[i] - letterSize*3*dt
     if x[config.numStars-1] < -letterSize*2 then
       initStars()
@@ -75,11 +75,11 @@ function love.keypressed(k)
 end
 
 function love.draw()
-  for i = 1,config.numStars do  
-    love.graphics.setColor(255 - stars[i].speed,255 - stars[i].speed/2,150,stars[i].speed*0.9);   
+  for i = 1,config.numStars do
+    love.graphics.setColor(255 - stars[i].speed,255 - stars[i].speed/2,150,stars[i].speed*0.9);
     love.graphics.draw(star, stars[i].x, stars[i].y, 0, stars[i].speed/255 + 0.55)
   end
-  
+
   love.graphics.setColor(255, 255, 255)
   love.graphics.draw(spaceship.image, spaceship.x, spaceship.y)
   love.graphics.print("spaceship.timeBoosted: " .. spaceship.timeBoosted, 10, 20)
