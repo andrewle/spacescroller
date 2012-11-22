@@ -84,7 +84,15 @@ function love.draw()
   end
 
   love.graphics.setColor(255, 255, 255)
-  love.graphics.draw(spaceship.images.normal, spaceship.x, spaceship.y)
+
+  -- if player is not boosted, draw the normal ship
+  -- if the player is boosted, draw the boosted ship
+  if spaceship.isBoosted == false then
+    love.graphics.draw(spaceship.images.normal, spaceship.x, spaceship.y)
+  else
+    love.graphics.draw(spaceship.images.boosted, spaceship.x, spaceship.y)
+  end
+
   love.graphics.print("spaceship.timeBoosted: " .. spaceship.timeBoosted, 10, 20)
 end
 
