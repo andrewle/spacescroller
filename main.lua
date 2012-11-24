@@ -23,6 +23,7 @@ function love.load()
     boostDuration = 2,
     timeBoosted   = 0,
     fireRate      = 1,
+    lastFiredAt   = 0.5,
   }
   
   laser = {
@@ -77,8 +78,17 @@ function love.update(dt)
   -- LASER STUFF
   totalLaserBeams = table.getn(lasers)
 
+  -- when was that last time we fired
+  -- if we should fire again
+  -- the only thing we know (right now) is when was the last we checked
   if love.keyboard.isDown(" ") then
-    table.insert(lasers, { x = spaceship.x + 125, y = spaceship.y + 30, } )
+  
+    if spaceship.lastFiredAt > 0.5 then
+      table.insert(lasers, { x = spaceship.x + 125, y = spaceship.y + 30, } )
+      spaceship.lastFiredAt = 0
+    else
+      spaceship.lastFiredAt = spaceship.lastFiredAt + dt
+    end
   end
   
   for i = 1, totalLaserBeams do 
@@ -100,9 +110,13 @@ function love.update(dt)
 end
 
 function love.keyreleased(key)
-   if key == "lshift" then
+  if key == "lshift" then
     spaceship.isBoosted = false
-   end
+  end
+  
+  if key == " " then
+    spaceship.lastFiredAt = 0.5
+  end
 end
 
 function love.draw()
@@ -125,7 +139,7 @@ function love.draw()
     love.graphics.draw(laser.images.default, lasers[i].x, lasers[i].y)
   end
 
-  love.graphics.print("dt: " .. world.dt, 10, 575)
+  love.graphics.print("dt: " .. world.dt .. " | spaceship.lastFiredAt: " .. spaceship.lastFiredAt, 10, 575)
 end
 
 function initStars()
