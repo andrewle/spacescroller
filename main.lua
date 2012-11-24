@@ -20,8 +20,17 @@ function love.load()
     timeBoosted   = 0,
     isFiring      = false,
     fireRate      = 1,
-    laserVelocity = 1,
   }
+  
+  laser = {
+    images = {
+      default = love.graphics.newImage("images/laser-beam.png"),
+    },
+    x = 0,
+    y = 0,
+    velocity = 1000,
+  }
+  lasers = {}
 
   star = love.graphics.newImage("images/star.png")
   stars = {}
@@ -44,7 +53,7 @@ function love.update(dt)
     end
 
     if love.keyboard.isDown("right") and (spaceship.x + config.step * dt) < 740 then
-	  spaceship.x = spaceship.x + config.step * dt
+	    spaceship.x = spaceship.x + config.step * dt
     end
   end
 
@@ -60,6 +69,17 @@ function love.update(dt)
     config.starSpeedFactor  = spaceship.boostFactor
     spaceship.isBoosted     = true
     spaceship.timeBoosted   = 0
+  end
+  
+  -- LASER STUFF
+  totalLaserBeams = table.getn(lasers)
+
+  if love.keyboard.isDown(" ") then
+    table.insert(lasers, { x = spaceship.x + 125, y = spaceship.y + 30, } )
+  end
+  
+  for i = 1, totalLaserBeams do 
+    lasers[i].x = lasers[i].x + laser.velocity * dt
   end
 
   for i = 1,config.numStars do
@@ -97,11 +117,15 @@ function love.draw()
   else
     love.graphics.draw(spaceship.images.boosted, spaceship.x, spaceship.y)
   end
+  
+  for i = 1, totalLaserBeams do 
+    love.graphics.draw(laser.images.default, lasers[i].x, lasers[i].y)
+  end
 end
 
 function initStars()
   local w = 800
-  for i = 1,config.numStars do
+  for i = 1, config.numStars do
     table.insert(stars, {x = math.random(1,800), y = math.random(1,600), speed = math.random(2,255)})
     angle[i] = i*6
     x[i] = w+i*letterSize
