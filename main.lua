@@ -22,9 +22,9 @@ function love.load()
     boostFactor   = 4,
     boostDuration = 2,
     timeBoosted   = 0,
-    fireRate      = 1,
-    lastFiredAt   = 0.5,
+    fireRate      = 5, -- fires / 1 sec
   }
+  spaceship.lastFiredAt = 1 / spaceship.fireRate
   
   laser = {
     images = {
@@ -83,7 +83,7 @@ function love.update(dt)
   -- the only thing we know (right now) is when was the last we checked
   if love.keyboard.isDown(" ") then
   
-    if spaceship.lastFiredAt > 0.5 then
+    if spaceship.lastFiredAt > 1 / spaceship.fireRate then
       table.insert(lasers, { x = spaceship.x + 125, y = spaceship.y + 30, } )
       spaceship.lastFiredAt = 0
     else
@@ -115,7 +115,7 @@ function love.keyreleased(key)
   end
   
   if key == " " then
-    spaceship.lastFiredAt = 0.5
+    spaceship.lastFiredAt = 1 / spaceship.fireRate
   end
 end
 
