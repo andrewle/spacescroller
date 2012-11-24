@@ -18,7 +18,6 @@ function love.load()
     boostFactor   = 4,
     boostDuration = 2,
     timeBoosted   = 0,
-    isFiring      = false,
     fireRate      = 1,
   }
   
@@ -26,8 +25,6 @@ function love.load()
     images = {
       default = love.graphics.newImage("images/laser-beam.png"),
     },
-    x = 0,
-    y = 0,
     velocity = 1000,
   }
   lasers = {}
