@@ -17,7 +17,10 @@ function love.load()
     isBoosted     = false,
     boostFactor   = 4,
     boostDuration = 2,
-    timeBoosted   = 0
+    timeBoosted   = 0,
+    isFiring      = false,
+    fireRate      = 1,
+    laserVelocity = 1,
   }
 
   star = love.graphics.newImage("images/star.png")
