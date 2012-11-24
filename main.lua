@@ -7,6 +7,10 @@ function love.load()
     starSpeedFactor = 1
   }
 
+  world = {
+    dt = 0
+  }
+
   spaceship = {
     images = {
       normal = love.graphics.newImage("images/hero-ship.png"),
@@ -40,6 +44,8 @@ function love.load()
 end
 
 function love.update(dt)
+  world.dt = dt
+
   if not spaceship.isBoosted then
     config.starSpeedFactor = 1
   end
@@ -118,6 +124,8 @@ function love.draw()
   for i = 1, totalLaserBeams do 
     love.graphics.draw(laser.images.default, lasers[i].x, lasers[i].y)
   end
+
+  love.graphics.print("dt: " .. world.dt, 10, 575)
 end
 
 function initStars()
